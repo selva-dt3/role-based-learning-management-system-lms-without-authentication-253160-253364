@@ -1,48 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { RoleProvider } from './context/RoleContext.jsx';
+import { HomePage } from './pages/HomePage.jsx';
+import { AdminPage } from './pages/AdminPage.jsx';
+import { HRPage } from './pages/HRPage.jsx';
+import { EmployeePage } from './pages/EmployeePage.jsx';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RoleProvider>
+      <BrowserRouter>
+        <div className="App">
+          <nav className="navbar" style={{ padding: 16, display: 'flex', gap: 16 }}>
+            <Link to="/">Home</Link>
+            <Link to="/admin">Admin</Link>
+            <Link to="/hr">HR</Link>
+            <Link to="/employee">Employee</Link>
+          </nav>
+          <div style={{ padding: 16 }}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/hr" element={<HRPage />} />
+              <Route path="/employee" element={<EmployeePage />} />
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
+    </RoleProvider>
   );
 }
 
